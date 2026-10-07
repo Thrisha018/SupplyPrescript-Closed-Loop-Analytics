@@ -4,18 +4,18 @@ DATA_PATH = "data/cleaned_supply_chain_data.csv"
 
 
 def prepare_features():
-    # Load cleaned dataset
+
     df = pd.read_csv(DATA_PATH)
 
-    # Target column
+    # Target variable
     y = df["delay"]
 
-    # Remove ID and delay_days to avoid data leakage
+    # Remove ID and target columns
+    # delay_days is removed to avoid target leakage
     X = df.drop(
         columns=["shipment_id", "delay", "delay_days"]
     )
 
-    # Identify categorical and numerical columns
     categorical_columns = X.select_dtypes(
         include=["object"]
     ).columns.tolist()
@@ -26,9 +26,14 @@ def prepare_features():
 
     print("Feature engineering completed!")
     print("Dataset shape:", X.shape)
-    print("Numerical features:", numerical_columns)
-    print("Categorical features:", categorical_columns)
-    print("Target shape:", y.shape)
+
+    print("\nNumerical features:")
+    print(numerical_columns)
+
+    print("\nCategorical features:")
+    print(categorical_columns)
+
+    print("\nTarget shape:", y.shape)
 
     return X, y, categorical_columns, numerical_columns
 
